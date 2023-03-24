@@ -1,0 +1,29 @@
+
+nav {
+    height: 60px;
+    background-color: #4350af !important;
+}
+
+nav a {
+    padding: 20px;
+}
+
+.active{
+    background-color: #26328d;
+}
+
+.logout {
+    margin-left : 20px !important;
+}
+
+/* .active::after {
+    content: "";
+    display: block;
+    width: 5rem;
+    height: 1.2rem;
+    background: #1976d2;
+    position: absolute;
+    left: calc(50% - 2.5rem);
+    margin-top: 0.3rem;
+    border-radius: 3px;
+} */
