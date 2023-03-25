@@ -1,0 +1,23 @@
+.addressContainer{
+margin-top: 0 !important;
+}
+
+.addressContainer h5{
+    text-align: center;
+}
+
+.addressoption .adressLabel{
+    width: 50%;
+    display: inline-flex;
+}
+
+.addressoption {
+    text-align: center;
+    padding: 30px;
+    min-width: 300px;
+}
+
+.addressoption .MuiInputBase-root {
+    min-width: 50%;
+    text-align: left;
+}

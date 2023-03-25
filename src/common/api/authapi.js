@@ -28,7 +28,6 @@ const authapi = {
     });
     if (rawResponse.ok) {
       const result = rawResponse;
-      console.log(result);
     } else {
     }
   },

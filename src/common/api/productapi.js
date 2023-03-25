@@ -1,9 +1,6 @@
+import { Utilities } from "../utilities";
+
 const productapi = {
-  token: () => {
-    {
-      return sessionStorage.getItem("token");
-    }
-  },
   getProduct: async (id) => {
     return fetch("http://localhost:8080/api/products/" + id, {
       method: "GET",
@@ -27,7 +24,7 @@ const productapi = {
       method: "POST",
       headers: {
         "Content-Type": "application/json;UTF-8",
-        Authorization: "Bearer " + productapi.token(),
+        Authorization: Utilities.getAuthoriztion(),
       },
       body: JSON.stringify(data),
     });
@@ -37,7 +34,7 @@ const productapi = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json;UTF-8",
-        Authorization: "Bearer " + productapi.token(),
+        Authorization: Utilities.getAuthoriztion(),
       },
       body: JSON.stringify(data),
     });
@@ -46,7 +43,7 @@ const productapi = {
     return fetch("http://localhost:8080/api/products/" + id, {
       method: "DELETE",
       headers: {
-        Authorization: "Bearer " + productapi.token(),
+        Authorization: productapi.getAuthoriztion(),
       },
     });
   },

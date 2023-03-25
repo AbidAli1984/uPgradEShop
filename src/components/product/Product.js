@@ -48,6 +48,7 @@ const Product = (props) => {
   const changeSortHandler = (event) => {
     debugger;
     let opt = Utilities.getFilteredData(sortingData, event.target.value);
+    console.log(opt);
     opt = opt[0];
     setSortBy(opt);
     Utilities.sortByField(products, opt.field, opt.type);

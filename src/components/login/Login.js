@@ -12,9 +12,9 @@ function Login(props) {
   const loginUser = async () => {
     const result = await authapi.login(loginData);
     if (result) {
-      debugger;
       sessionStorage.setItem("token", result.token);
       sessionStorage.setItem("isAdmin", result.isAdmin);
+      sessionStorage.setItem("id", result.userId);
       navigate("/product");
     } else {
       alert("invalid username/password!");

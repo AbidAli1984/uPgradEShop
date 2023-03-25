@@ -9,7 +9,9 @@ import AddProduct from "./components/product/addproduct/AddProduct";
 import { useEffect, useState } from "react";
 import EditProduct from "./components/product/editproduct/EditProduct";
 import PageNotFound from "./common/pagenotfound/PageNotFound";
-import ProductDetails from "./components/product/productdetails/ProductDetails";
+import ProductDetails from "./components/productdetails/ProductDetails";
+import OrderPage from "./components/orderpage/OrderPage";
+import { Utilities } from "./common/utilities";
 
 function App(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,13 +22,12 @@ function App(props) {
 
   const checkAuth = () => {
     let path = location.pathname;
-    debugger;
-    if (sessionStorage.getItem("token")) {
+    if (Utilities.token) {
       setIsLoggedIn(true);
-      setIsAdmin(sessionStorage.getItem("isAdmin") === "true");
+      setIsAdmin(Utilities.isAdmin());
       if (path === "/login" || path === "/") path = "/product";
       navigate(path);
-    } else if (!sessionStorage.getItem("token")) {
+    } else if (!Utilities.token) {
       navigate("/login");
     }
   };
@@ -63,6 +64,7 @@ function App(props) {
           path="productdetails"
           element={<ProductDetails checkAuth={checkAuth} />}
         />
+        <Route path="orderpage" element={<OrderPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>

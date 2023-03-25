@@ -1,4 +1,16 @@
 export const Utilities = {
+  token: () => {
+    return sessionStorage.getItem("token");
+  },
+  getuserId: () => {
+    return sessionStorage.getItem("id");
+  },
+  isAdmin: () => {
+    return sessionStorage.getItem("isAdmin") === "true";
+  },
+  getAuthoriztion: () => {
+    return "Bearer " + Utilities.token();
+  },
   getEmptyProduct: () => {
     return {
       id: "",
@@ -9,6 +21,20 @@ export const Utilities = {
       price: "",
       imageUrl: "",
       description: "",
+      quantity: 1,
+    };
+  },
+  getEmptyAddress: () => {
+    return {
+      id: "",
+      user: Utilities.getuserId(),
+      name: "",
+      contactNumber: "",
+      street: "",
+      city: "",
+      state: "",
+      landmark: "",
+      zipcode: "",
     };
   },
   getFilteredData: (arr, value) => {
