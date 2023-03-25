@@ -2,7 +2,7 @@ import { Utilities } from "../utilities";
 
 const addressapi = {
   saveaddress: async function (address) {
-    const rawResponse = await fetch("http://localhost:8080/api/addresses", {
+    return fetch("http://localhost:8080/api/addresses", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -10,11 +10,7 @@ const addressapi = {
         Authorization: Utilities.getAuthoriztion(),
       },
       body: JSON.stringify(address),
-    });
-    if (rawResponse.ok) {
-      const result = rawResponse;
-    } else {
-    }
+    }).then((response) => response.text());
   },
   getAddress: async (id) => {
     return fetch("http://localhost:8080/api/addresses/" + id, {

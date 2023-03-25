@@ -5,3 +5,12 @@
 .navButton button{
     margin-left: 10px;
 }
+
+.detailsContainer{
+    box-shadow: 0px 0px 3px #cbcbcb;
+    padding-bottom: 100px;
+}
+
+.detailsContainer .description {
+    width: 100%;
+}

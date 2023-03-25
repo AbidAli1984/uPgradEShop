@@ -1,11 +1,63 @@
 
 nav {
     height: 60px;
-    background-color: #4350af !important;
+    background-color: #3f51b5 !important;
 }
 
 nav a {
     padding: 20px;
+}
+
+nav .logo * {
+    float: left;
+}
+
+nav .logo svg {
+    margin-right: 10px;
+}
+
+nav .searchbar {
+    width: 100%;
+    background-color: #6773cb;
+    border-radius: 5px;
+}
+
+nav .searchbar div{
+    padding: 9px 5px 5px;
+    background: transparent;
+    color: white;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    float: left;
+}
+
+nav input[type=text] {
+    padding: 11px;
+    font-size: 17px;
+    border: none;
+    background: transparent;
+    width: calc(100% - 100px);
+    color: white !important;
+    border-radius: 0 5px 5px 0;
+  }
+
+  nav input[type=text]:focus {
+    outline: none;
+  }
+
+  ::placeholder {
+    color: white;
+    opacity: 0.5;
+  }
+
+
+
+nav .navLink{
+    float: right;
+}
+
+nav .logo, nav .navLink {
+    padding-top: 3px;
 }
 
 .active{
@@ -15,15 +67,3 @@ nav a {
 .logout {
     margin-left : 20px !important;
 }
-
-/* .active::after {
-    content: "";
-    display: block;
-    width: 5rem;
-    height: 1.2rem;
-    background: #1976d2;
-    position: absolute;
-    left: calc(50% - 2.5rem);
-    margin-top: 0.3rem;
-    border-radius: 3px;
-} */

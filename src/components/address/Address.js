@@ -2,7 +2,7 @@ import "./Address.css";
 import {
   Box,
   Button,
-  InputLabel,
+  Input,
   MenuItem,
   Select,
   TextField,
@@ -12,31 +12,29 @@ import { useEffect, useState } from "react";
 import addressapi from "../../common/api/addressapi";
 import { Utilities } from "../../common/utilities";
 
-const Address = () => {
+const Address = (props) => {
   const [addresses, setAddressess] = useState();
-  //const [address, setAddress] = useState(Utilities.getEmptyAddress());
-  const [userid] = useState(Utilities.getuserId());
   const [addressData, setAddressData] = useState(Utilities.getEmptyAddress());
 
-  useEffect(() => {
+  const getAddressess = (util) => {
     addressapi.getAddresses().then((result) => {
       const filteredAddress = result.filter(({ user }) => {
-        return user == userid;
+        return user === util.getuserId();
       });
       setAddressess(filteredAddress);
-      setAddressData(
-        filteredAddress.length > 0
-          ? filteredAddress[0]
-          : Utilities.getEmptyAddress()
-      );
     });
+  };
+
+  useEffect(() => {
+    console.log(Utilities);
+    getAddressess(Utilities);
   }, []);
 
-  const handleChangeAddress = (id) => {
-    debugger;
-    addressapi.getAddress(id).then((result) => {
-      console.log(result);
-      setAddressData(result);
+  const save = () => {
+    addressapi.saveaddress(addressData).then((result) => {
+      getAddressess(Utilities);
+      setAddressData(Utilities.getEmptyAddress());
+      props.setSelectedAddress(result);
     });
   };
 
@@ -46,13 +44,18 @@ const Address = () => {
         <div className="adressLabel">Select Address</div>
         <br />
         <Select
-          value={addressData.id}
+          value={props.selectedAddress}
           onChange={(e) => {
-            handleChangeAddress(e.target.value);
+            props.setSelectedAddress(e.target.value);
           }}
+          input={<Input id="name-multiple" />}
         >
           {addresses?.map((add) => {
-            return <MenuItem value={add.id}>{add.name}</MenuItem>;
+            return (
+              <MenuItem key={add.id} value={add.id}>
+                {`${add.name}-->${add.street}, ${add.city}`},{" "}
+              </MenuItem>
+            );
           })}
         </Select>
       </div>
@@ -64,51 +67,58 @@ const Address = () => {
         </Typography>
         <TextField
           fullWidth
+          value={addressData.name}
           label="Name *"
           onChange={(e) => {
-            addressData.name = e.target.value;
+            setAddressData({ ...addressData, name: e.target.value });
           }}
         />
         <TextField
           fullWidth
+          value={addressData.contactNumber}
           label="Contact Number *"
           onChange={(e) => {
-            addressData.contactNumber = e.target.value;
+            setAddressData({ ...addressData, contactNumber: e.target.value });
           }}
         />
         <TextField
           fullWidth
+          value={addressData.street}
           label="Street *"
           onChange={(e) => {
-            addressData.street = e.target.value;
+            setAddressData({ ...addressData, street: e.target.value });
           }}
         />
         <TextField
           fullWidth
+          value={addressData.city}
           label="City *"
           onChange={(e) => {
-            addressData.city = e.target.value;
+            setAddressData({ ...addressData, city: e.target.value });
           }}
         />
         <TextField
           fullWidth
+          value={addressData.state}
           label="State *"
           onChange={(e) => {
-            addressData.state = e.target.value;
+            setAddressData({ ...addressData, state: e.target.value });
           }}
         />
         <TextField
           fullWidth
+          value={addressData.landmark}
           label="Landmark"
           onChange={(e) => {
-            addressData.landmark = e.target.value;
+            setAddressData({ ...addressData, landmark: e.target.value });
           }}
         />
         <TextField
           fullWidth
+          value={addressData.zipcode}
           label="Zip code *"
           onChange={(e) => {
-            addressData.zipcode = e.target.value;
+            setAddressData({ ...addressData, zipcode: e.target.value });
           }}
         />
         <Button
@@ -116,9 +126,7 @@ const Address = () => {
           fullWidth
           variant="contained"
           color="info"
-          onClick={() => {
-            addressapi.saveaddress(addressData);
-          }}
+          onClick={save}
         >
           SAVE ADDRESS
         </Button>

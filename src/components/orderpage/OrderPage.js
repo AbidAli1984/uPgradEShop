@@ -9,9 +9,12 @@ import {
   StepLabel,
 } from "@mui/material";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import OrderDetails from "./OrderDetails";
+import { useLocation, useNavigate } from "react-router-dom";
+import OrderProuct from "./OrderProuct";
 import Address from "../address/Address";
+import OrderDetails from "./OrderDetails";
+import { Utilities } from "../../common/utilities";
+import orderapi from "../../common/api/orderapi";
 
 const steps = ["Items", "Select Address", "Confirm Order"];
 
@@ -27,15 +30,46 @@ const OrderPage = () => {
   const location = useLocation();
   const [product] = useState(location.state?.product);
   const [activeStep, setActiveStep] = useState(0);
+  const [isFinalStep, setIsFinalStep] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState("");
+  const navigate = useNavigate();
 
-  debugger;
+  const placeOrder = () => {
+    const data = {
+      quantity: product.quantity,
+      user: Utilities.getuserId(),
+      product: product.id,
+      address: selectedAddress,
+    };
+    orderapi.placeOrder(data).then((response) => {
+      debugger;
+      alert("order successfully placed");
+      navigate("/product");
+    });
+  };
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    debugger;
+    if (activeStep === 1 && !selectedAddress) {
+      alert("please select address");
+      return;
+    }
+
+    if (isFinalStep) {
+      placeOrder();
+      return;
+    }
+    setActiveStep((prevActiveStep) => {
+      setIsFinalStep(steps.length - 1 === prevActiveStep + 1);
+      return prevActiveStep + 1;
+    });
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => {
+      setIsFinalStep(steps.length - 1 === prevActiveStep - 1);
+      return prevActiveStep - 1;
+    });
   };
 
   return (
@@ -58,8 +92,20 @@ const OrderPage = () => {
         </Grid>
         <Grid item xs={1}></Grid>
       </Grid>
-      {activeStep === 0 && <OrderDetails product={product} />}
-      {activeStep === 1 && <Address />}
+      {activeStep === 0 && <OrderProuct Item={Item} product={product} />}
+      {activeStep === 1 && (
+        <Address
+          selectedAddress={selectedAddress}
+          setSelectedAddress={setSelectedAddress}
+        />
+      )}
+      {activeStep === 2 && (
+        <OrderDetails
+          Item={Item}
+          product={product}
+          selectedAddress={selectedAddress}
+        />
+      )}
 
       <div className="navButton">
         <Button
@@ -70,7 +116,7 @@ const OrderPage = () => {
           BACK
         </Button>
         <Button onClick={handleNext} variant="contained" color="primary">
-          NEXT
+          {isFinalStep ? "PLACE ORDER" : "NEXT"}
         </Button>
       </div>
     </>

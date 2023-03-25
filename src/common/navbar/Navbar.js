@@ -1,8 +1,19 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import { ShoppingCart } from "@mui/icons-material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Grid,
+  Toolbar,
+  Typography,
+  styled,
+  Paper,
+  TextField,
+} from "@mui/material";
+import { Search, ShoppingCart } from "@mui/icons-material";
 import "../navbar/Navbar.css";
 import { useEffect, useState } from "react";
+import { Utilities } from "../utilities";
 
 function Navbar(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn);
@@ -14,51 +25,75 @@ function Navbar(props) {
     setIsAdmin(props.isAdmin);
   }, [props.isLoggedIn, props.isAdmin]);
 
-  const links = [
-    { name: "Home", path: "/product", isDisplay: isLoggedIn },
-    { name: "Login", path: "/login", isDisplay: !isLoggedIn },
-    { name: "Sign Up", path: "/signup", isDisplay: !isLoggedIn },
-    {
-      name: "Add Product",
-      path: "/addproduct",
-      isDisplay: isLoggedIn && isAdmin,
-    },
-  ];
-
   const logoutHandler = () => {
     sessionStorage.clear();
     props.setIsLoggedIn(false);
     navigate("/login");
   };
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: "#3f51b5",
+    boxShadow: "none",
+    color: "#fff",
+    float: "left",
+  }));
+
   return (
     <AppBar component="nav">
       <Toolbar>
-        <ShoppingCart />
-        <Typography sx={{ flexGrow: 1 }} variant="h6">
-          upGrad E-Shop
-        </Typography>
-        <Box>
-          {links.map(({ name, path, isDisplay }, index) => {
-            return (
-              isDisplay && (
-                <NavLink key={name} to={path} style={{ color: "white" }}>
-                  {name}
-                </NavLink>
-              )
-            );
-          })}
-          {isLoggedIn && (
-            <Button
-              className="logout"
-              variant="contained"
-              color="error"
-              onClick={logoutHandler}
-            >
-              LOGOUT
-            </Button>
-          )}
-        </Box>
+        <Grid container>
+          <Grid item xs={4}>
+            <Item className="logo">
+              <ShoppingCart />
+              <Typography sx={{ flexGrow: 1 }} variant="h6">
+                upGrad E-Shop
+              </Typography>
+            </Item>
+          </Grid>
+          <Grid item xs={4}>
+            {isLoggedIn && (
+              <Item className="searchbar">
+                <div>
+                  <Search />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search.."
+                  name="search"
+                  onChange={(e) => {
+                    props.searchProduct(e.target.value);
+                  }}
+                />
+              </Item>
+            )}
+          </Grid>
+          <Grid item xs={4}>
+            <Item className="navLink">
+              {Utilities.getlinks(isLoggedIn, isAdmin).map(
+                ({ name, path, isDisplay }, index) => {
+                  return (
+                    isDisplay && (
+                      <NavLink key={name} to={path} style={{ color: "white" }}>
+                        {name}
+                      </NavLink>
+                    )
+                  );
+                }
+              )}
+              {isLoggedIn && (
+                <Button
+                  className="logout"
+                  variant="contained"
+                  color="error"
+                  onClick={logoutHandler}
+                >
+                  LOGOUT
+                </Button>
+              )}
+            </Item>
+          </Grid>
+        </Grid>
+        <Box></Box>
       </Toolbar>
     </AppBar>
   );

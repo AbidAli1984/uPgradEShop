@@ -4,6 +4,7 @@
 
 .css-1633um2-MuiPaper-root{
     box-shadow: none !important;
+    text-align: left !important;
 }
 
 .productDetails {
@@ -13,12 +14,6 @@
 .productDetails img {
     max-width: 100%;
     max-height: 450px;
-}
-
-.productDetails .row{
-    margin-right: 20px;
-    text-align: left;
-    display: table;
 }
 
 .productDetails .row span {

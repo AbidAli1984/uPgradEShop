@@ -11,6 +11,18 @@ export const Utilities = {
   getAuthoriztion: () => {
     return "Bearer " + Utilities.token();
   },
+  getlinks: (isLoggedIn, isAdmin) => {
+    return [
+      { name: "Home", path: "/product", isDisplay: isLoggedIn },
+      { name: "Login", path: "/login", isDisplay: !isLoggedIn },
+      { name: "Sign Up", path: "/signup", isDisplay: !isLoggedIn },
+      {
+        name: "Add Product",
+        path: "/addproduct",
+        isDisplay: isLoggedIn && isAdmin,
+      },
+    ];
+  },
   getEmptyProduct: () => {
     return {
       id: "",

@@ -8,7 +8,7 @@
   max-width: 500px;
   justify-content: center;
   margin: auto;
-  margin-top: 80px;
+  margin-top: 70px;
   margin-bottom: 40px;
   align-items: center;
   padding: 10px
@@ -16,4 +16,8 @@
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root{
   background-color: #4350af !important;
+}
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 14px 12px !important;
 }
