@@ -43,7 +43,7 @@ const productapi = {
     return fetch("http://localhost:8080/api/products/" + id, {
       method: "DELETE",
       headers: {
-        Authorization: productapi.getAuthoriztion(),
+        Authorization: Utilities.getAuthoriztion(),
       },
     });
   },

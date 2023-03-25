@@ -42,14 +42,12 @@ const OrderPage = () => {
       address: selectedAddress,
     };
     orderapi.placeOrder(data).then((response) => {
-      debugger;
       alert("order successfully placed");
       navigate("/product");
     });
   };
 
   const handleNext = () => {
-    debugger;
     if (activeStep === 1 && !selectedAddress) {
       alert("please select address");
       return;

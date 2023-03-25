@@ -52,13 +52,11 @@ const Product = (props) => {
   };
 
   const changeSortHandler = (event) => {
-    debugger;
     sortAndFilterData(event.target.value);
   };
 
   const sortAndFilterData = (value) => {
     let opt = Utilities.getFilteredData(sortingData, value);
-    console.log(opt);
     opt = opt[0];
     setSortBy(opt);
     Utilities.sortByField(products, opt.field, opt.type);

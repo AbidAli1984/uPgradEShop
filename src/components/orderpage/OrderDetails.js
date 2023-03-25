@@ -13,10 +13,7 @@ const OrderDetails = (props) => {
   }, []);
 
   const getAddress = () => {
-    debugger;
     addressapi.getAddress(props.selectedAddress).then((result) => {
-      debugger;
-      console.log(result);
       setAddressData(result);
     });
   };

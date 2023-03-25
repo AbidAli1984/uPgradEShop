@@ -15,7 +15,11 @@ const ProductCard = ({ product, openDeleteConfirm, isAdmin }) => {
 
   return (
     <>
-      <Card key={product.index} sx={{ width: 300, float: "left", margin: 5 }}>
+      <Card
+        className="productCard"
+        key={product.index}
+        sx={{ width: 300, float: "left", margin: 5 }}
+      >
         <CardMedia
           component="img"
           alt="product"

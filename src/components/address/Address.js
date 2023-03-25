@@ -26,7 +26,6 @@ const Address = (props) => {
   };
 
   useEffect(() => {
-    console.log(Utilities);
     getAddressess(Utilities);
   }, []);
 
