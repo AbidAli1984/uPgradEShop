@@ -10,6 +10,7 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import { Utilities } from "../../common/utilities";
+import { Search } from "@mui/icons-material";
 
 let products;
 const Product = (props) => {
@@ -26,7 +27,7 @@ const Product = (props) => {
   ];
 
   //const [products, setProducts] = useState();
-  const [productCaterogy, setproductCaterogy] = useState();
+  const [filteredProduct, setfilteredProduct] = useState();
   const [categories, setCategories] = useState();
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState(sortingData[0]);
@@ -37,7 +38,7 @@ const Product = (props) => {
       const resultData = result.map((res, ind) => ({ ...res, index: ind }));
       //setProducts(resultData);
       products = resultData;
-      setproductCaterogy(resultData);
+      setfilteredProduct(resultData);
     }, []);
 
     productapi.getCategories().then((result) => {
@@ -45,33 +46,41 @@ const Product = (props) => {
     });
   }, []);
 
+  const changeSearchHandler = (searchValue) => {
+    filterProductByField(searchValue, "name");
+    if (!searchValue) sortAndFilterData(sortBy.value);
+  };
+
   const changeSortHandler = (event) => {
     debugger;
-    let opt = Utilities.getFilteredData(sortingData, event.target.value);
+    sortAndFilterData(event.target.value);
+  };
+
+  const sortAndFilterData = (value) => {
+    let opt = Utilities.getFilteredData(sortingData, value);
     console.log(opt);
     opt = opt[0];
     setSortBy(opt);
     Utilities.sortByField(products, opt.field, opt.type);
-    setproductCaterogy(products);
+    setfilteredProduct(products);
 
-    if (category) setFilterProduct(category);
+    if (category) filterProductByField(category, "category");
   };
 
   const changeCategoryHandler = (event) => {
     setCategory(event.target.value);
-    if (!event.target.value) {
-      setproductCaterogy(products);
-      return;
-    }
-
-    setFilterProduct(event.target.value);
+    filterProductByField(event.target.value, "category");
   };
 
-  const setFilterProduct = (value) => {
+  const filterProductByField = (value, field) => {
+    if (!value) {
+      setfilteredProduct(products);
+      return;
+    }
     const filterProduct = products.filter((product) => {
-      return product.category === value;
+      return product[field].toLowerCase().includes(value.toLowerCase());
     });
-    setproductCaterogy(filterProduct);
+    setfilteredProduct(filterProduct);
   };
 
   const deleteProductHandler = (id) => {
@@ -82,12 +91,25 @@ const Product = (props) => {
       }
       return product.id !== id;
     });
-    setproductCaterogy(products);
+    setfilteredProduct(products);
     return name;
   };
 
   return (
     <Container>
+      <div className="searchbar">
+        <div>
+          <Search />
+        </div>
+        <input
+          type="text"
+          placeholder="Search.."
+          name="search"
+          onChange={(e) => {
+            changeSearchHandler(e.target.value);
+          }}
+        />
+      </div>
       <div style={{ textAlign: "center", marginTop: 20 }}>
         <ToggleButtonGroup
           color="primary"
@@ -127,7 +149,7 @@ const Product = (props) => {
         </Select>
       </div>
       <ProductList
-        products={productCaterogy}
+        products={filteredProduct}
         deleteProductHandler={deleteProductHandler}
         isAdmin={props.isAdmin}
       />

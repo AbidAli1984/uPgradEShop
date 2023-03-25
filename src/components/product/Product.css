@@ -1,0 +1,37 @@
+.searchbar {
+    width: 30%;
+    background-color: #6773cb;
+    border-radius: 5px;
+    position: fixed;
+    top: 10px;
+    z-index: 9999;
+    left: 35%;
+}
+
+.searchbar div{
+    padding: 9px 5px 5px;
+    background: transparent;
+    color: white;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    float: left;
+}
+
+.searchbar input[type=text] {
+    padding: 11px;
+    font-size: 17px;
+    border: none;
+    background: transparent;
+    width: calc(100% - 100px);
+    color: white !important;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .searchbar input[type=text]:focus {
+    outline: none;
+  }
+
+  .searchbar input[type=text]::placeholder {
+    color: white;
+    opacity: 0.5;
+  }

@@ -51,21 +51,7 @@ function Navbar(props) {
             </Item>
           </Grid>
           <Grid item xs={4}>
-            {isLoggedIn && (
-              <Item className="searchbar">
-                <div>
-                  <Search />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search.."
-                  name="search"
-                  onChange={(e) => {
-                    props.searchProduct(e.target.value);
-                  }}
-                />
-              </Item>
-            )}
+            {isLoggedIn && <Item className="searchbar"></Item>}
           </Grid>
           <Grid item xs={4}>
             <Item className="navLink">

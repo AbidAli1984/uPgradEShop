@@ -16,7 +16,6 @@ import { Utilities } from "./common/utilities";
 function App(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
   let navigate = useNavigate();
 
   const location = useLocation();
@@ -38,15 +37,9 @@ function App(props) {
     checkAuth();
   }, []);
 
-  const searchProduct = (value) => {
-    debugger;
-    setSearchValue(value);
-  };
-
   return (
     <div>
       <Navbar
-        searchProduct={searchProduct}
         isLoggedIn={isLoggedIn}
         isAdmin={isAdmin}
         setIsLoggedIn={setIsLoggedIn}
@@ -58,13 +51,7 @@ function App(props) {
         <Route path="signup" element={<Signup />} />
         <Route
           path="product"
-          element={
-            <Product
-              checkAuth={checkAuth}
-              isAdmin={isAdmin}
-              searchValue={searchValue}
-            />
-          }
+          element={<Product checkAuth={checkAuth} isAdmin={isAdmin} />}
         />
         <Route
           path="addproduct"
