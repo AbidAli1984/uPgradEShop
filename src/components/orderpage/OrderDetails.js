@@ -1,5 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import addressapi from "../../common/api/addressapi";
 import { Utilities } from "../../common/utilities";
 
@@ -12,10 +13,14 @@ const OrderDetails = (props) => {
     getAddress();
   }, []);
 
-  const getAddress = () => {
-    addressapi.getAddress(props.selectedAddress).then((result) => {
+  const getAddress = async () => {
+    const result = await addressapi.getAddress(props.selectedAddress);
+
+    if (result) {
       setAddressData(result);
-    });
+    } else {
+      toast.error(Utilities.messages.getErrorMessage());
+    }
   };
 
   return (

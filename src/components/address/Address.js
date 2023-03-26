@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import addressapi from "../../common/api/addressapi";
 import { Utilities } from "../../common/utilities";
 import { useForm } from "react-hook-form";
+import ReactToastify from "../../common/reacttoastify/ReactToastify";
+import { toast } from "react-toastify";
 
 const Address = (props) => {
   const {
@@ -36,17 +38,23 @@ const Address = (props) => {
     getAddressess(Utilities);
   }, []);
 
-  const save = (data) => {
+  const save = async (data) => {
     data.user = Utilities.getuserId();
-    addressapi.saveaddress(data).then((result) => {
+    const result = await addressapi.saveaddress(data);
+
+    if (result) {
       getAddressess(Utilities);
       props.setSelectedAddress(result);
       reset();
-    });
+      toast.success("Address added successfully");
+    } else {
+      toast.error(Utilities.messages.getErrorMessage());
+    }
   };
 
   return (
     <>
+      <ReactToastify />
       <div className="addressoption">
         <div className="adressLabel">Select Address</div>
         <br />

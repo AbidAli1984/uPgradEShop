@@ -56,7 +56,7 @@ const OrderPage = () => {
 
   const handleNext = () => {
     if (activeStep === 1 && !selectedAddress) {
-      alert("please select address");
+      toast.error("Please select address");
       return;
     }
 
