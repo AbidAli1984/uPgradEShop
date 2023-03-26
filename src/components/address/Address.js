@@ -18,9 +18,10 @@ const Address = (props) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
+
   const [addresses, setAddressess] = useState();
-  const [addressData, setAddressData] = useState(Utilities.getEmptyAddress());
 
   const getAddressess = (util) => {
     addressapi.getAddresses().then((result) => {
@@ -35,11 +36,12 @@ const Address = (props) => {
     getAddressess(Utilities);
   }, []);
 
-  const save = () => {
-    addressapi.saveaddress(addressData).then((result) => {
+  const save = (data) => {
+    data.user = Utilities.getuserId();
+    addressapi.saveaddress(data).then((result) => {
       getAddressess(Utilities);
-      setAddressData(Utilities.getEmptyAddress());
       props.setSelectedAddress(result);
+      reset();
     });
   };
 
@@ -64,7 +66,7 @@ const Address = (props) => {
           })}
         </Select>
       </div>
-      <Box className="addressContainer main-Box">
+      <form className="addressContainer main-Box" onSubmit={handleSubmit(save)}>
         <Typography variant="h5" paddingTop={0}>
           -OR -<br />
           <br />
@@ -72,70 +74,79 @@ const Address = (props) => {
         </Typography>
         <TextField
           fullWidth
-          value={addressData.name}
           label="Name *"
-          onChange={(e) => {
-            setAddressData({ ...addressData, name: e.target.value });
-          }}
+          {...register("name", { required: "Name is Required" })}
+          error={Boolean(errors.name)}
+          helperText={errors.name?.message}
         />
         <TextField
           fullWidth
-          value={addressData.contactNumber}
           label="Contact Number *"
-          onChange={(e) => {
-            setAddressData({ ...addressData, contactNumber: e.target.value });
-          }}
+          {...register("contactNumber", {
+            required: "Contact Number is required",
+          })}
+          error={Boolean(errors.contactNumber)}
+          helperText={errors.contactNumber?.message}
         />
         <TextField
           fullWidth
-          value={addressData.street}
           label="Street *"
-          onChange={(e) => {
-            setAddressData({ ...addressData, street: e.target.value });
-          }}
+          {...register("street", { required: "Street is Required" })}
+          error={Boolean(errors.street)}
+          helperText={errors.street?.message}
         />
         <TextField
           fullWidth
-          value={addressData.city}
+          //value={addressData.city}
           label="City *"
-          onChange={(e) => {
-            setAddressData({ ...addressData, city: e.target.value });
-          }}
+          {...register("city", { required: "City is Required" })}
+          error={Boolean(errors.city)}
+          helperText={errors.city?.message}
+          // onChange={(e) => {
+          //   setAddressData({ ...addressData, city: e.target.value });
+          // }}
         />
         <TextField
           fullWidth
-          value={addressData.state}
+          //value={addressData.state}
           label="State *"
-          onChange={(e) => {
-            setAddressData({ ...addressData, state: e.target.value });
-          }}
+          {...register("state", { required: "State is Required" })}
+          error={Boolean(errors.state)}
+          helperText={errors.state?.message}
+          // onChange={(e) => {
+          //   setAddressData({ ...addressData, state: e.target.value });
+          // }}
         />
         <TextField
           fullWidth
-          value={addressData.landmark}
+          //value={addressData.landmark}
           label="Landmark"
-          onChange={(e) => {
-            setAddressData({ ...addressData, landmark: e.target.value });
-          }}
+          {...register("landmark")}
+          // onChange={(e) => {
+          //   setAddressData({ ...addressData, landmark: e.target.value });
+          // }}
         />
         <TextField
           fullWidth
-          value={addressData.zipcode}
+          //value={addressData.zipcode}
           label="Zip code *"
-          onChange={(e) => {
-            setAddressData({ ...addressData, zipcode: e.target.value });
-          }}
+          {...register("zipcode", { required: "Zip code is Required" })}
+          error={Boolean(errors.zipcode)}
+          helperText={errors.zipcode?.message}
+          // onChange={(e) => {
+          //   setAddressData({ ...addressData, zipcode: e.target.value });
+          // }}
         />
         <Button
+          type="submit"
           sx={{ marginTop: 2 }}
           fullWidth
           variant="contained"
           color="info"
-          onClick={save}
         >
           SAVE ADDRESS
         </Button>
-      </Box>
+      </form>
     </>
   );
 };
