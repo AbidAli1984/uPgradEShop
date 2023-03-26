@@ -1,6 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { toast } from "react-toastify";
 import productapi from "../../common/api/productapi";
@@ -12,6 +13,7 @@ const ProductForm = ({ eventHandler, prodId }) => {
   const [buttonTitle, setButtonTitle] = useState("SAVE PRODUCT");
   const [categories, setCategories] = useState();
   const [category, setCategory] = useState({ value: "", label: "" });
+  const navigate = useNavigate();
 
   const {
     register,
@@ -23,21 +25,28 @@ const ProductForm = ({ eventHandler, prodId }) => {
     getCategories();
     if (prodId) {
       productapi.getProduct(prodId).then((result) => {
-        setCategory({ value: result.category, label: result.category });
-        setProduct(result);
+        if (result) {
+          setCategory({ value: result.category, label: result.category });
+          setProduct(result);
+        } else {
+          toast.error(Utilities.messages.getErrorMessage());
+        }
       });
       setButtonTitle("MODIFY PRODUCT");
     }
   }, []);
 
-  const getCategories = () => {
-    productapi.getCategories().then((result) => {
-      result = result.map((cat) => {
+  const getCategories = async () => {
+    const result = await productapi.getCategories();
+    if (result) {
+      let editedResult = result.map((cat) => {
         return { value: cat, label: cat };
       });
 
-      setCategories(result);
-    });
+      setCategories(editedResult);
+    } else {
+      toast.error(Utilities.messages.getErrorMessage());
+    }
   };
 
   const addOrUpdateProduct = async (data) => {
@@ -48,11 +57,10 @@ const ProductForm = ({ eventHandler, prodId }) => {
       const response = await eventHandler(product);
       debugger;
       if (response) {
-        getCategories();
-        setProduct(Utilities.getEmptyProduct());
-        setCategory({ value: "", label: "" });
-        toast.success(message);
-      } else toast.error("Something went wrong!");
+        navigate("/product", {
+          state: { alertmessage: message },
+        });
+      } else toast.error(Utilities.messages.getErrorMessage());
     }
   };
 

@@ -11,34 +11,39 @@ import {
 } from "@mui/material";
 import { Utilities } from "../../common/utilities";
 import { Search } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import ReactToastify from "../../common/reacttoastify/ReactToastify";
 
 let products;
 const Product = (props) => {
-  const sortingData = [
-    { value: "default", label: "Default", field: "index", type: "" },
-    {
-      value: "htol",
-      label: "Price: High to Low",
-      field: "price",
-      type: "DESC",
-    },
-    { value: "ltoh", label: "Price: Low to High", field: "price", type: "" },
-    { value: "newest", label: "Newest", field: "index", type: "DESC" },
-  ];
+  const sortingData = Utilities.getSortingData();
 
   //const [products, setProducts] = useState();
   const [filteredProduct, setfilteredProduct] = useState();
   const [categories, setCategories] = useState();
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState(sortingData[0]);
+  const location = useLocation();
+  let counter = 0;
 
   useEffect(() => {
+    if (counter == 0) {
+      if (location.state && location.state.alertmessage)
+        toast.success(location.state.alertmessage);
+      counter++;
+    }
+
     props.checkAuth();
     productapi.getProducts().then((result) => {
-      const resultData = result.map((res, ind) => ({ ...res, index: ind }));
-      //setProducts(resultData);
-      products = resultData;
-      setfilteredProduct(resultData);
+      if (result) {
+        const resultData = result.map((res, ind) => ({ ...res, index: ind }));
+        //setProducts(resultData);
+        products = resultData;
+        setfilteredProduct(resultData);
+      } else {
+        toast.error(Utilities.messages.getErrorMessage());
+      }
     }, []);
 
     productapi.getCategories().then((result) => {
@@ -95,6 +100,7 @@ const Product = (props) => {
 
   return (
     <Container>
+      <ReactToastify />
       <div className="searchbar">
         <div>
           <Search />

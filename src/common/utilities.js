@@ -1,4 +1,9 @@
 export const Utilities = {
+  messages: {
+    getErrorMessage: () => {
+      return "something went wrong";
+    },
+  },
   token: () => {
     return sessionStorage.getItem("token");
   },
@@ -63,6 +68,19 @@ export const Utilities = {
     return arr.filter((val) => {
       return (val.value || val) === value;
     });
+  },
+  getSortingData: () => {
+    return [
+      { value: "default", label: "Default", field: "index", type: "" },
+      {
+        value: "htol",
+        label: "Price: High to Low",
+        field: "price",
+        type: "DESC",
+      },
+      { value: "ltoh", label: "Price: Low to High", field: "price", type: "" },
+      { value: "newest", label: "Newest", field: "index", type: "DESC" },
+    ];
   },
   sortByField: (arr, key, type) => {
     if (!key || typeof arr[0] !== "object") return;

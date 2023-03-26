@@ -2,22 +2,37 @@ import { Utilities } from "../utilities";
 
 const productapi = {
   getProduct: async (id) => {
-    return fetch("http://localhost:8080/api/products/" + id, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;UTF-8",
-      },
-    }).then((response) => response.json());
+    try {
+      const rawResponse = await fetch(
+        "http://localhost:8080/api/products/" + id,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json;UTF-8",
+          },
+        }
+      );
+
+      return rawResponse.ok ? rawResponse.json() : null;
+    } catch (error) {
+      return null;
+    }
   },
   getProducts: async () => {
-    return fetch("http://localhost:8080/api/products", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;UTF-8",
-      },
-    }).then((response) => response.json());
+    try {
+      const rawResponse = await fetch("http://localhost:8080/api/products", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;UTF-8",
+        },
+      });
+
+      return await (rawResponse.ok ? rawResponse.json() : null);
+    } catch (error) {
+      return null;
+    }
   },
   addProduct: async (data) => {
     try {
@@ -49,7 +64,7 @@ const productapi = {
         }
       );
 
-      return await rawResponse.ok;
+      return rawResponse.ok;
     } catch (error) {
       return null;
     }
@@ -71,13 +86,22 @@ const productapi = {
     }
   },
   getCategories: async () => {
-    return fetch("http://localhost:8080/api/products/categories", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
+    try {
+      const rawResponse = await fetch(
+        "http://localhost:8080/api/products/categories",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return rawResponse.ok ? rawResponse.json() : null;
+    } catch (error) {
+      return null;
+    }
   },
 };
 

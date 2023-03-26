@@ -15,6 +15,7 @@ import Address from "../address/Address";
 import OrderDetails from "./OrderDetails";
 import { Utilities } from "../../common/utilities";
 import orderapi from "../../common/api/orderapi";
+import { toast } from "react-toastify";
 
 const steps = ["Items", "Select Address", "Confirm Order"];
 
@@ -34,17 +35,23 @@ const OrderPage = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const navigate = useNavigate();
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     const data = {
       quantity: product.quantity,
       user: Utilities.getuserId(),
       product: product.id,
       address: selectedAddress,
     };
-    orderapi.placeOrder(data).then((response) => {
-      alert("order successfully placed");
-      navigate("/product");
-    });
+
+    const result = await orderapi.placeOrder(data);
+
+    if (result) {
+      navigate("/product", {
+        state: { alertmessage: "Order placed successfully" },
+      });
+    } else {
+      toast.error(Utilities.messages.getErrorMessage());
+    }
   };
 
   const handleNext = () => {

@@ -31,7 +31,7 @@ function Signup() {
       toast.success("User Registered Successfully!");
       setUser(Utilities.getEmptyUser());
     } else {
-      toast.error("Something went wrong!");
+      toast.error(Utilities.messages.getErrorMessage());
     }
   };
 

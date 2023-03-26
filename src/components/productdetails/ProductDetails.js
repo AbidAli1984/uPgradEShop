@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Paper } from "@mui/material";
 import { Utilities } from "../../common/utilities";
+import { toast } from "react-toastify";
+import ReactToastify from "../../common/reacttoastify/ReactToastify";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,7 +25,11 @@ const ProductDetails = (props) => {
   useEffect(() => {
     const prodId = location.state?.id;
     productapi.getProduct(prodId).then((result) => {
-      setProduct(result);
+      if (result) {
+        setProduct(result);
+      } else {
+        toast.error(Utilities.messages.getErrorMessage());
+      }
     });
   }, []);
 
@@ -34,6 +40,7 @@ const ProductDetails = (props) => {
 
   return (
     <Box className="productContainer">
+      <ReactToastify />
       <Grid className="productDetails" container spacing={2}>
         <Grid item xs={1}></Grid>
         <Grid item xs={4}>

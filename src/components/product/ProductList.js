@@ -4,6 +4,7 @@ import { useState } from "react";
 import productapi from "../../common/api/productapi";
 import { toast } from "react-toastify";
 import ReactToastify from "../../common/reacttoastify/ReactToastify";
+import { Utilities } from "../../common/utilities";
 
 const ProductList = (props) => {
   const [productid, setProductId] = useState();
@@ -24,7 +25,7 @@ const ProductList = (props) => {
       let name = props.deleteProductHandler(productid);
       toast.success(`Product ${name} deleted successfully`);
     } else {
-      toast.success("Something Went wrong");
+      toast.success(Utilities.messages.getErrorMessage());
     }
     setOpen(false);
   };
