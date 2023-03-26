@@ -1,74 +1,78 @@
+import "react-toastify/dist/ReactToastify.css";
+import "./Login.css";
+import authapi from "../../common/api/authapi";
+
 import { Typography, Box, TextField, Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import authapi from "../../common/api/authapi";
-import { useState } from "react";
+import { toast } from "react-toastify";
+import ReactToastify from "../../common/reacttoastify/ReactToastify";
+import { useForm } from "react-hook-form";
 
-function Login(props) {
-  const [loginData] = useState({});
+function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   let navigate = useNavigate();
 
-  const loginUser = async () => {
-    const result = await authapi.login(loginData);
+  const onSubmit = async (data) => {
+    const result = await authapi.login(data);
     if (result) {
       sessionStorage.setItem("token", result.token);
       sessionStorage.setItem("isAdmin", result.isAdmin);
       sessionStorage.setItem("id", result.userId);
       navigate("/product");
     } else {
-      alert("invalid username/password!");
+      toast.error("invalid username/password!");
     }
   };
 
   return (
     <div>
-      <Box className="main-Box">
-        <div
-          style={{
-            display: "flex",
-            backgroundColor: "red",
-            borderRadius: "50%",
-            padding: "10px",
-          }}
-        >
-          <LockOutlinedIcon style={{ color: "white", fontSize: "20px" }} />
-        </div>
+      <ReactToastify />
+      <form className="main-Box" onSubmit={handleSubmit(onSubmit)}>
+        <LockOutlinedIcon className="lockIcon" />
         <Typography variant="h5" padding={1}>
           Sign in
         </Typography>
         <TextField
           fullWidth
+          name="username"
           type={"email"}
-          label="Email Address *"
-          onChange={(e) => {
-            loginData.username = e.target.value;
-          }}
+          label="Email Address"
+          {...register("username", {
+            required: "Email Address is required.",
+          })}
+          error={Boolean(errors.username)}
+          helperText={errors.username?.message}
         />
         <TextField
           fullWidth
+          name="password"
           type={"password"}
-          label="Password *"
-          onChange={(e) => {
-            loginData.password = e.target.value;
-          }}
+          label="Password"
+          {...register("password", {
+            required: "Password is required.",
+          })}
+          error={Boolean(errors.password)}
+          helperText={errors.password?.message}
         />
         <Button
+          type="submit"
           sx={{ marginTop: 2 }}
           fullWidth
           variant="contained"
           color="info"
-          onClick={loginUser}
         >
           SIGN IN
         </Button>
-        <Link
-          to={"/signup"}
-          style={{ alignSelf: "flex-start", marginTop: "15px" }}
-        >
+        <Link to={"/signup"} className="signupLink">
           Don't have an account? Sign Up
         </Link>
-      </Box>
+      </form>
       <Typography textAlign={"center"} color="darkgray">
         Copyright &#169; <a href="http://upgrad.com">upGrad</a> 2023
       </Typography>

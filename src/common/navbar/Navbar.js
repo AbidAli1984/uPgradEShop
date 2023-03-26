@@ -8,7 +8,6 @@ import {
   Typography,
   styled,
   Paper,
-  TextField,
 } from "@mui/material";
 import { Search, ShoppingCart } from "@mui/icons-material";
 import "../navbar/Navbar.css";

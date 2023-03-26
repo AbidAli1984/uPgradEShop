@@ -11,8 +11,14 @@ import {
 import { useEffect, useState } from "react";
 import addressapi from "../../common/api/addressapi";
 import { Utilities } from "../../common/utilities";
+import { useForm } from "react-hook-form";
 
 const Address = (props) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [addresses, setAddressess] = useState();
   const [addressData, setAddressData] = useState(Utilities.getEmptyAddress());
 

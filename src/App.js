@@ -1,5 +1,6 @@
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./common/navbar/Navbar";
 import Login from "./components/login/Login";
 import Signup from "./components/signup/Signup";

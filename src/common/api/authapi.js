@@ -31,17 +31,22 @@ const authapi = {
     } else {
     }
   },
-  login: function (data) {
-    return fetch("http://localhost:8080/api/auth/signin", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json;UTF-8",
-      },
-      body: JSON.stringify(data),
-    }).then((response) => {
-      return response.ok ? response.json() : null;
-    });
+  login: async (data) => {
+    try {
+      const rawResponse = await fetch("http://localhost:8080/api/auth/signin", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;UTF-8",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await (rawResponse.ok ? rawResponse.json() : null);
+      return result;
+    } catch (error) {
+      return null;
+    }
   },
 };
 
