@@ -8,15 +8,8 @@ const EditProduct = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const edit = (product) => {
-    return productapi.updateProduct(product).then((result) => {
-      if (result.ok) {
-        alert("product updated Successfully!");
-        navigate("/product");
-        return true;
-      }
-      return false;
-    });
+  const edit = async (product) => {
+    return await productapi.updateProduct(product);
   };
 
   return (

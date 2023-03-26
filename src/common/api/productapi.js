@@ -20,32 +20,55 @@ const productapi = {
     }).then((response) => response.json());
   },
   addProduct: async (data) => {
-    return fetch("http://localhost:8080/api/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;UTF-8",
-        Authorization: Utilities.getAuthoriztion(),
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const rawResponse = await fetch("http://localhost:8080/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;UTF-8",
+          Authorization: Utilities.getAuthoriztion(),
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await (rawResponse.ok ? rawResponse.text() : null);
+    } catch (error) {
+      return null;
+    }
   },
   updateProduct: async (data) => {
-    return fetch("http://localhost:8080/api/products/" + data.id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json;UTF-8",
-        Authorization: Utilities.getAuthoriztion(),
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const rawResponse = await fetch(
+        "http://localhost:8080/api/products/" + data.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json;UTF-8",
+            Authorization: Utilities.getAuthoriztion(),
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      return await rawResponse.ok;
+    } catch (error) {
+      return null;
+    }
   },
   deleteProducts: async (id) => {
-    return fetch("http://localhost:8080/api/products/" + id, {
-      method: "DELETE",
-      headers: {
-        Authorization: Utilities.getAuthoriztion(),
-      },
-    });
+    try {
+      const rawResponse = await fetch(
+        "http://localhost:8080/api/products/" + id,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: Utilities.getAuthoriztion(),
+          },
+        }
+      );
+      return rawResponse;
+    } catch (error) {
+      return null;
+    }
   },
   getCategories: async () => {
     return fetch("http://localhost:8080/api/products/categories", {

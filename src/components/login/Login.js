@@ -31,7 +31,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <>
       <ReactToastify />
       <form className="main-Box" onSubmit={handleSubmit(loginUser)}>
         <LockOutlinedIcon className="lockIcon" />
@@ -74,7 +74,7 @@ function Login() {
       <Typography textAlign={"center"} color="darkgray">
         Copyright &#169; <a href="http://upgrad.com">upGrad</a> 2023
       </Typography>
-    </div>
+    </>
   );
 }
 

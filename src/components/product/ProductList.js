@@ -2,6 +2,8 @@ import DeleteConfirmation from "../../common/dialog/DeleteConfirmation";
 import ProductCard from "./ProductCard";
 import { useState } from "react";
 import productapi from "../../common/api/productapi";
+import { toast } from "react-toastify";
+import ReactToastify from "../../common/reacttoastify/ReactToastify";
 
 const ProductList = (props) => {
   const [productid, setProductId] = useState();
@@ -16,13 +18,14 @@ const ProductList = (props) => {
     setOpen(false);
   };
 
-  const deleteProduct = () => {
-    productapi.deleteProducts(productid).then((result) => {
-      if (result.ok) {
-        let name = props.deleteProductHandler(productid);
-        alert(`Product ${name} deleted successfully`);
-      }
-    });
+  const deleteProduct = async () => {
+    const response = await productapi.deleteProducts(productid);
+    if (response && response.ok) {
+      let name = props.deleteProductHandler(productid);
+      toast.success(`Product ${name} deleted successfully`);
+    } else {
+      toast.success("Something Went wrong");
+    }
     setOpen(false);
   };
 
@@ -39,6 +42,7 @@ const ProductList = (props) => {
 
   return (
     <>
+      <ReactToastify />
       <DeleteConfirmation
         open={open}
         deleteHandler={deleteProduct}

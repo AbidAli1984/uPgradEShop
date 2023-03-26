@@ -4,14 +4,8 @@ import productapi from "../../../common/api/productapi";
 import ProductForm from "../ProductForm";
 
 const AddProduct = (props) => {
-  const add = (product) => {
-    return productapi.addProduct(product).then((result) => {
-      if (result.ok) {
-        alert("product added Successfully!");
-        return true;
-      }
-      return false;
-    });
+  const add = async (product) => {
+    return await productapi.addProduct(product);
   };
 
   return (
