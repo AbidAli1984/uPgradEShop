@@ -23,6 +23,16 @@ export const Utilities = {
       },
     ];
   },
+  getEmptyUser: () => {
+    return {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirm: "",
+      contactNumber: "",
+    };
+  },
   getEmptyProduct: () => {
     return {
       id: "",

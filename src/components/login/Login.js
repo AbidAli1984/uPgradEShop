@@ -2,7 +2,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 import authapi from "../../common/api/authapi";
 
-import { Typography, Box, TextField, Button } from "@mui/material";
+import { Typography, TextField, Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ function Login() {
 
   let navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const loginUser = async (data) => {
     const result = await authapi.login(data);
     if (result) {
       sessionStorage.setItem("token", result.token);
@@ -33,16 +33,15 @@ function Login() {
   return (
     <div>
       <ReactToastify />
-      <form className="main-Box" onSubmit={handleSubmit(onSubmit)}>
+      <form className="main-Box" onSubmit={handleSubmit(loginUser)}>
         <LockOutlinedIcon className="lockIcon" />
         <Typography variant="h5" padding={1}>
           Sign in
         </Typography>
         <TextField
           fullWidth
-          name="username"
           type={"email"}
-          label="Email Address"
+          label="Email Address *"
           {...register("username", {
             required: "Email Address is required.",
           })}
@@ -51,9 +50,8 @@ function Login() {
         />
         <TextField
           fullWidth
-          name="password"
           type={"password"}
-          label="Password"
+          label="Password *"
           {...register("password", {
             required: "Password is required.",
           })}

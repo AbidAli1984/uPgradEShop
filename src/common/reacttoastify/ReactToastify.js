@@ -1,7 +1,7 @@
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ReactToastify = (props) => {
+const ReactToastify = () => {
   return (
     <ToastContainer
       position="top-right"

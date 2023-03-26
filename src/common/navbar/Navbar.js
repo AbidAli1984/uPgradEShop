@@ -9,7 +9,7 @@ import {
   styled,
   Paper,
 } from "@mui/material";
-import { Search, ShoppingCart } from "@mui/icons-material";
+import { ShoppingCart } from "@mui/icons-material";
 import "../navbar/Navbar.css";
 import { useEffect, useState } from "react";
 import { Utilities } from "../utilities";
