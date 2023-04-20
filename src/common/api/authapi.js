@@ -1,12 +1,11 @@
+import { Utilities } from "../utilities";
+
 const authapi = {
   login: async (data) => {
     try {
-      const rawResponse = await fetch("http://localhost:8080/api/auth/signin", {
+      const rawResponse = await fetch(Utilities.URL.login, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json;UTF-8",
-        },
+        headers: Utilities.getHeaders,
         body: JSON.stringify(data),
       });
 

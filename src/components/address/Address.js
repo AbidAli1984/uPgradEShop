@@ -48,7 +48,7 @@ const Address = (props) => {
       reset();
       toast.success("Address added successfully");
     } else {
-      toast.error(Utilities.messages.getErrorMessage());
+      toast.error(Utilities.messages.error);
     }
   };
 

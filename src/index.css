@@ -15,3 +15,20 @@ code {
 #react-select-3-listbox{
   z-index: 2;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(100, 99, 99);
+  border-radius: 10px;
+}

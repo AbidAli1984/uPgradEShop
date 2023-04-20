@@ -1,14 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  AppBar,
-  Box,
-  Button,
-  Grid,
-  Toolbar,
-  Typography,
-  styled,
-  Paper,
-} from "@mui/material";
+import { AppBar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 import "../navbar/Navbar.css";
 import { useEffect, useState } from "react";
@@ -30,12 +21,7 @@ function Navbar(props) {
     navigate("/login");
   };
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: "#3f51b5",
-    boxShadow: "none",
-    color: "#fff",
-    float: "left",
-  }));
+  const Item = Utilities.style.Item();
 
   return (
     <AppBar component="nav">

@@ -29,7 +29,7 @@ const ProductForm = ({ eventHandler, prodId }) => {
           setCategory({ value: result.category, label: result.category });
           setProduct(result);
         } else {
-          toast.error(Utilities.messages.getErrorMessage());
+          toast.error(Utilities.messages.error);
         }
       });
       setButtonTitle("MODIFY PRODUCT");
@@ -45,22 +45,20 @@ const ProductForm = ({ eventHandler, prodId }) => {
 
       setCategories(editedResult);
     } else {
-      toast.error(Utilities.messages.getErrorMessage());
+      toast.error(Utilities.messages.error);
     }
   };
 
   const addOrUpdateProduct = async (data) => {
-    debugger;
     if (typeof eventHandler === "function") {
       let message = prodId ? "modified" : "added";
       message = `Product ${product.name} ${message} successfully`;
       const response = await eventHandler(product);
-      debugger;
       if (response) {
         navigate("/product", {
           state: { alertmessage: message },
         });
-      } else toast.error(Utilities.messages.getErrorMessage());
+      } else toast.error(Utilities.messages.error);
     }
   };
 

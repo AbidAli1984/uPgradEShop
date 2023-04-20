@@ -2,61 +2,59 @@ import "./Product.css";
 import { useEffect, useState } from "react";
 import productapi from "../../common/api/productapi";
 import ProductList from "./ProductList";
-import {
-  Container,
-  MenuItem,
-  Select,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
 import { Utilities } from "../../common/utilities";
-import { Search } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import ReactToastify from "../../common/reacttoastify/ReactToastify";
+import SearchField from "../../common/fields/SearchField";
+import ToggleButtonField from "../../common/fields/ToggleButtonField";
+import SelectField from "../../common/fields/SelectField";
 
 let products;
-const Product = (props) => {
+const Product = ({ checkAuth, isAdmin }) => {
   const sortingData = Utilities.getSortingData();
 
-  //const [products, setProducts] = useState();
   const [filteredProduct, setfilteredProduct] = useState();
   const [categories, setCategories] = useState();
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState(sortingData[0]);
   const location = useLocation();
-  let counter = 0;
 
   useEffect(() => {
-    if (counter == 0) {
-      if (location.state && location.state.alertmessage)
-        toast.success(location.state.alertmessage);
-      counter++;
-    }
+    if (location.state && location.state.alertmessage)
+      toast.success(location.state.alertmessage);
 
-    props.checkAuth();
-    productapi.getProducts().then((result) => {
-      if (result) {
-        const resultData = result.map((res, ind) => ({ ...res, index: ind }));
-        //setProducts(resultData);
-        products = resultData;
-        setfilteredProduct(resultData);
-      } else {
-        toast.error(Utilities.messages.getErrorMessage());
-      }
-    }, []);
+    checkAuth();
+    loadProductAndCategories();
+  }, []);
+
+  const loadProductAndCategories = async () => {
+    const result = await productapi.getProducts();
+
+    if (result) {
+      const resultData = result.map((res, ind) => ({ ...res, index: ind }));
+      products = resultData;
+      setfilteredProduct(resultData);
+    } else {
+      toast.error(Utilities.messages.error);
+    }
 
     productapi.getCategories().then((result) => {
       setCategories(result);
     });
-  }, []);
+  };
 
-  const changeSearchHandler = (searchValue) => {
+  const handleSearchOnChange = (searchValue) => {
     filterProductByField(searchValue, "name");
     if (!searchValue) sortAndFilterData(sortBy.value);
   };
 
-  const changeSortHandler = (event) => {
+  const handleCategoryOnChange = (event) => {
+    setCategory(event.target.value);
+    filterProductByField(event.target.value, "category");
+  };
+
+  const handleSortOnChange = (event) => {
     sortAndFilterData(event.target.value);
   };
 
@@ -70,11 +68,6 @@ const Product = (props) => {
     if (category) filterProductByField(category, "category");
   };
 
-  const changeCategoryHandler = (event) => {
-    setCategory(event.target.value);
-    filterProductByField(event.target.value, "category");
-  };
-
   const filterProductByField = (value, field) => {
     if (!value) {
       setfilteredProduct(products);
@@ -86,7 +79,7 @@ const Product = (props) => {
     setfilteredProduct(filterProduct);
   };
 
-  const deleteProductHandler = (id) => {
+  const updateProductListOnDelete = (id) => {
     let name;
     products = products.filter((product) => {
       if (product.id === id) {
@@ -99,65 +92,30 @@ const Product = (props) => {
   };
 
   return (
-    <Container>
+    <>
       <ReactToastify />
-      <div className="searchbar">
-        <div>
-          <Search />
-        </div>
-        <input
-          type="text"
-          placeholder="Search.."
-          name="search"
-          onChange={(e) => {
-            changeSearchHandler(e.target.value);
-          }}
-        />
-      </div>
-      <div style={{ textAlign: "center", marginTop: 20 }}>
-        <ToggleButtonGroup
-          color="primary"
-          exclusive
-          aria-label="Platform"
-          value={category}
-          onChange={changeCategoryHandler}
-        >
-          <ToggleButton key="all" value="">
-            ALL
-          </ToggleButton>
-          {categories?.map((cat) => {
-            return (
-              <ToggleButton key={cat} value={cat}>
-                {cat}
-              </ToggleButton>
-            );
-          })}
-        </ToggleButtonGroup>
-      </div>
-      <div style={{ textAlign: "left" }}>
+      <SearchField handleSearchOnChange={handleSearchOnChange} />
+      <ToggleButtonField
+        arrayList={categories}
+        handleOnChange={handleCategoryOnChange}
+        selectedValue={category}
+      />
+      <div className="prodContainer sortBySelect">
         <br />
         Sort By:
         <br />
-        <Select
-          sx={{ height: 40, minWidth: 300 }}
-          value={sortBy.value}
-          onChange={changeSortHandler}
-        >
-          {sortingData.map((sort) => {
-            return (
-              <MenuItem key={sort.value} value={sort.value} label={sort.label}>
-                {sort.label}
-              </MenuItem>
-            );
-          })}
-        </Select>
+        <SelectField
+          objArrayList={sortingData}
+          handleOnChange={handleSortOnChange}
+          selectedValue={sortBy.value}
+        />
       </div>
       <ProductList
         products={filteredProduct}
-        deleteProductHandler={deleteProductHandler}
-        isAdmin={props.isAdmin}
+        updateProductListOnDelete={updateProductListOnDelete}
+        isAdmin={isAdmin}
       />
-    </Container>
+    </>
   );
 };
 

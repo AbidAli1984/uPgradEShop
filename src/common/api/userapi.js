@@ -1,17 +1,17 @@
+import { Utilities } from "../utilities";
+
 const userapi = {
   register: async function (data) {
     try {
-      const rawResponse = await fetch("http://localhost:8080/api/auth/signup", {
+      const rawResponse = await fetch(Utilities.URL.register, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;UTF-8",
-        },
+        headers: Utilities.getHeaders,
         body: JSON.stringify(data),
       });
 
-      const result = await (rawResponse.ok ? rawResponse.text() : null);
-      return result;
+      return rawResponse;
+      // const result = await rawResponse.json(); // (rawResponse.ok ? rawResponse.text() : null);
+      // return result;
     } catch (error) {
       return null;
     }

@@ -1,20 +1,47 @@
+import { styled, Paper } from "@mui/material";
+
+let baseUrl = "http://localhost:8080/api/";
+
 export const Utilities = {
-  messages: {
-    getErrorMessage: () => {
-      return "something went wrong";
-    },
+  setSession(result) {
+    sessionStorage.setItem("token", result.token);
+    sessionStorage.setItem("isAdmin", result.isAdmin);
+    sessionStorage.setItem("id", result.userId);
   },
-  token: () => {
+  token() {
     return sessionStorage.getItem("token");
   },
-  getuserId: () => {
+  getuserId() {
     return sessionStorage.getItem("id");
   },
-  isAdmin: () => {
+  isAdmin() {
     return sessionStorage.getItem("isAdmin") === "true";
   },
-  getAuthoriztion: () => {
-    return "Bearer " + Utilities.token();
+  getAuthoriztion() {
+    return "Bearer " + this.token();
+  },
+  URL: {
+    login: baseUrl + "auth/signin",
+    register: baseUrl + "auth/signup",
+  },
+  getHeaders: {
+    Accept: "application/json",
+    "Content-type": "application/json;UTF-8",
+  },
+  getAuthHeaders() {
+    return {
+      Accept: "application/json",
+      "Content-type": "application/json;UTF-8",
+      Authorization: this.getAuthoriztion(),
+    };
+  },
+  messages: {
+    error: "something went wrong",
+    invalidLogin: "invalid username/password!",
+  },
+  label: {
+    signup: "Don't have an account? Sign Up",
+    signin: "Already have an account? Sign in",
   },
   getlinks: (isLoggedIn, isAdmin) => {
     return [
@@ -27,16 +54,6 @@ export const Utilities = {
         isDisplay: isLoggedIn && isAdmin,
       },
     ];
-  },
-  getEmptyUser: () => {
-    return {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirm: "",
-      contactNumber: "",
-    };
   },
   getEmptyProduct: () => {
     return {
@@ -108,5 +125,13 @@ export const Utilities = {
     arr.sort((a, b) => {
       return a - b;
     });
+  },
+  style: {
+    Item: () => {
+      return styled(Paper)(({ theme }) => ({
+        backgroundColor: "transparent",
+        boxShadow: "none",
+      }));
+    },
   },
 };

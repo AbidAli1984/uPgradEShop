@@ -1,34 +1,28 @@
 import "./ProductDetails.css";
-import { Box, Button, Grid, styled, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import productapi from "../../common/api/productapi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Paper } from "@mui/material";
 import { Utilities } from "../../common/utilities";
 import { toast } from "react-toastify";
 import ReactToastify from "../../common/reacttoastify/ReactToastify";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+const Item = Utilities.style.Item();
 
-const ProductDetails = (props) => {
+const ProductDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState(Utilities.getEmptyProduct());
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
+    debugger;
     const prodId = location.state?.id;
     productapi.getProduct(prodId).then((result) => {
       if (result) {
         setProduct(result);
       } else {
-        toast.error(Utilities.messages.getErrorMessage());
+        toast.error(Utilities.messages.error);
       }
     });
   }, []);

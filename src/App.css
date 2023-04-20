@@ -18,6 +18,59 @@
   background-color: #4350af !important;
 }
 
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-  padding: 14px 12px !important;
+.MuiInputBase-input {
+  padding: 10px !important;
+}
+
+.MuiFormLabel-root.MuiInputLabel-root {
+  top: -5px
+}
+
+.css-makoee-MuiInputAdornment-root svg{
+  top: 10px;
+  position: absolute;
+  right: 15px;
+}
+
+.passwordIcon {
+  cursor: pointer;
+}
+
+.searchbar {
+  width: 30%;
+  background-color: #6773cb;
+  border-radius: 5px;
+  position: fixed;
+  top: 10px;
+  z-index: 9999;
+  left: 35%;
+}
+
+.searchbar svg {
+  padding: 10px;
+  color: white;
+  float: left;
+}
+
+.searchbar input[type=text] {
+  padding: 11px;
+  font-size: 17px;
+  border: none;
+  background: transparent;
+  width: calc(100% - 100px);
+  color: white !important;
+  border-radius: 0 5px 5px 0;
+}
+
+.searchbar input[type=text]:focus {
+  outline: none;
+}
+
+.searchbar input[type=text]::placeholder {
+  color: white;
+  opacity: 0.5;
+}
+
+.padding-50{
+  padding: 50px
 }

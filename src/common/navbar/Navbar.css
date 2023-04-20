@@ -4,6 +4,10 @@ nav {
     background-color: #3f51b5 !important;
 }
 
+nav * {
+    color: white;
+}
+
 nav a {
     padding: 20px;
 }

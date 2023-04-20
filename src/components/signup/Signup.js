@@ -1,10 +1,4 @@
-import {
-  Typography,
-  TextField,
-  Button,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
+import { Typography, Checkbox, FormControlLabel } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -13,26 +7,49 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import ReactToastify from "../../common/reacttoastify/ReactToastify";
 import { Utilities } from "../../common/utilities";
+import TextEmail from "../../common/fields/TextEmail";
+import TextPassword from "../../common/fields/TextPassword";
+import TextConfirmPassword from "../../common/fields/TextConfirmPassword";
+import SubmitButton from "../../common/fields/SubmitButton";
+import TextFieldRequired from "../../common/fields/TextFieldRequired";
 
 function Signup() {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [user, setUser] = useState(Utilities.getEmptyUser());
+  const [helperTextCP, setHelperTextCP] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const registerUser = async (data) => {
+    if (!isConfirmPasswordMatch(confirmPassword, data.password)) return;
     data.role = [isAdmin ? "admin" : "user"];
-    const result = await userapi.register(data);
 
-    if (result) {
-      toast.success("User Registered Successfully!");
-      setUser(Utilities.getEmptyUser());
+    const rawResponse = await userapi.register(data);
+    const result = await rawResponse.json();
+
+    if (rawResponse.ok) {
+      toast.success(result.message);
+      setIsAdmin(false);
+      reset();
     } else {
-      toast.error(Utilities.messages.getErrorMessage());
+      toast.error(result.message);
     }
+  };
+
+  const isConfirmPasswordMatch = (value, password) => {
+    if (value) {
+      if (value === password) {
+        setHelperTextCP("");
+        return true;
+      }
+      setHelperTextCP("Confirm password doesn't match with password field");
+    } else setHelperTextCP("Confirm password is required");
+    return false;
   };
 
   return (
@@ -43,81 +60,38 @@ function Signup() {
         <Typography variant="h5" padding={1}>
           Sign up
         </Typography>
-        <TextField
-          fullWidth
-          value={user.firstName}
-          label="First Name *"
-          {...register("firstName", { required: "First Name is required" })}
-          error={Boolean(errors.firstName)}
-          helperText={errors.firstName?.message}
-          onChange={(e) => {
-            setUser({ ...user, firstName: e.target.value });
-          }}
+        <TextFieldRequired
+          register={register}
+          errors={errors}
+          field="firstName"
+          label="First Name"
         />
-        <TextField
-          fullWidth
-          value={user.lastName}
-          label="Last Name *"
-          {...register("lastName", { required: "Last Name is required" })}
-          error={Boolean(errors.lastName)}
-          helperText={errors.lastName?.message}
-          onChange={(e) => {
-            setUser({ ...user, lastName: e.target.value });
-          }}
+
+        <TextFieldRequired
+          register={register}
+          errors={errors}
+          field="lastName"
+          label="Last Name"
         />
-        <TextField
-          fullWidth
-          value={user.email}
-          type={"email"}
-          label="Email Address *"
-          {...register("email", { required: "Email Address is required" })}
-          error={Boolean(errors.email)}
-          helperText={errors.email?.message}
-          onChange={(e) => {
-            setUser({ ...user, email: e.target.value });
-          }}
+
+        <TextEmail register={register} errors={errors} />
+        <TextPassword register={register} errors={errors} />
+        <TextConfirmPassword
+          setConfirmPassword={setConfirmPassword}
+          helperTextCP={helperTextCP}
         />
-        <TextField
-          fullWidth
-          value={user.password}
-          type={"password"}
-          label="Password *"
-          {...register("password", { required: "Password is required" })}
-          error={Boolean(errors.password)}
-          helperText={errors.password?.message}
-          onChange={(e) => {
-            setUser({ ...user, password: e.target.value });
-          }}
+
+        <TextFieldRequired
+          register={register}
+          errors={errors}
+          field="contactNumber"
+          label="Contact Number"
         />
-        <TextField
-          fullWidth
-          value={user.confirm}
-          type={"password"}
-          label="Confirm Password *"
-          {...register("confirm", { required: "Confirm Password is required" })}
-          error={Boolean(errors.confirm)}
-          helperText={errors.confirm?.message}
-          onChange={(e) => {
-            setUser({ ...user, confirm: e.target.value });
-          }}
-        />
-        <TextField
-          fullWidth
-          value={user.contactNumber}
-          type={"text"}
-          label="Contact Number *"
-          {...register("contactNumber", {
-            required: "Contact Number is required",
-          })}
-          error={Boolean(errors.contactNumber)}
-          helperText={errors.contactNumber?.message}
-          onChange={(e) => {
-            setUser({ ...user, contactNumber: e.target.value });
-          }}
-        />
+
         <FormControlLabel
           control={
             <Checkbox
+              checked={isAdmin}
               onClick={() => {
                 setIsAdmin(!isAdmin);
               }}
@@ -125,17 +99,9 @@ function Signup() {
           }
           label="Is Admin"
         />
-        <Button
-          type="submit"
-          sx={{ marginTop: 2 }}
-          fullWidth
-          variant="contained"
-          color="info"
-        >
-          SIGN UP
-        </Button>
+        <SubmitButton text="SIGN UP"></SubmitButton>
         <Link to={"/login"} className="signinLink">
-          Already have an account? Sign in
+          {Utilities.label.signin}
         </Link>
       </form>
       <Typography textAlign={"center"} color="darkgray">

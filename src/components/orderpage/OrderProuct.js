@@ -1,8 +1,9 @@
 import { Box, Grid } from "@mui/material";
 import { useState } from "react";
+import { Utilities } from "../../common/utilities";
 
 const OrderProuct = (props) => {
-  const Item = props.Item;
+  const Item = Utilities.style.Item();
   const [product] = useState(props.product);
 
   return (

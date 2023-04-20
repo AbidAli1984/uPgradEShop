@@ -1,13 +1,5 @@
 import "./OrderPage.css";
-import {
-  Button,
-  Grid,
-  Step,
-  Stepper,
-  styled,
-  Paper,
-  StepLabel,
-} from "@mui/material";
+import { Button, Grid, Step, Stepper, StepLabel } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import OrderProuct from "./OrderProuct";
@@ -19,13 +11,7 @@ import { toast } from "react-toastify";
 
 const steps = ["Items", "Select Address", "Confirm Order"];
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+const Item = Utilities.style.Item();
 
 const OrderPage = () => {
   const location = useLocation();
@@ -50,7 +36,7 @@ const OrderPage = () => {
         state: { alertmessage: "Order placed successfully" },
       });
     } else {
-      toast.error(Utilities.messages.getErrorMessage());
+      toast.error(Utilities.messages.error);
     }
   };
 
@@ -97,7 +83,7 @@ const OrderPage = () => {
         </Grid>
         <Grid item xs={1}></Grid>
       </Grid>
-      {activeStep === 0 && <OrderProuct Item={Item} product={product} />}
+      {activeStep === 0 && <OrderProuct product={product} />}
       {activeStep === 1 && (
         <Address
           selectedAddress={selectedAddress}
@@ -105,11 +91,7 @@ const OrderPage = () => {
         />
       )}
       {activeStep === 2 && (
-        <OrderDetails
-          Item={Item}
-          product={product}
-          selectedAddress={selectedAddress}
-        />
+        <OrderDetails product={product} selectedAddress={selectedAddress} />
       )}
 
       <div className="navButton">

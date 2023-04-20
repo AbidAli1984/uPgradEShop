@@ -5,7 +5,7 @@ import addressapi from "../../common/api/addressapi";
 import { Utilities } from "../../common/utilities";
 
 const OrderDetails = (props) => {
-  const Item = props.Item;
+  const Item = Utilities.style.Item();
   const [product] = useState(props.product);
   const [addressData, setAddressData] = useState(Utilities.getEmptyAddress());
 
@@ -19,7 +19,7 @@ const OrderDetails = (props) => {
     if (result) {
       setAddressData(result);
     } else {
-      toast.error(Utilities.messages.getErrorMessage());
+      toast.error(Utilities.messages.error);
     }
   };
 
